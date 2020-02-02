@@ -19,13 +19,13 @@ namespace BE {
 		public	static BEGround instance;
 		
 		public 	Vector2 		UnitSize = Vector2.one;	// actual width, height size of one tile
-		public 	Vector2 		GridSize;				// map size 
+		public 	Vector2 		GridSize;				// map size 在检视器中设置Ground的
 		public 	int 			SubGridSize = 2;		// how many sub tiles in on tile (sub tiles are used when AStar path finding)
 		public	BEAStar			AStar;					// a star path finding class
 		public	BEWorkerManager	WorkerManager;			// control worker (build building, wondering map)
 		public	Transform 		trDecoRoot = null;
 
-		public 	Building [,] 			Cells;			// 2-dimensional array of each tile(cell)
+		public 	Building [,] 			Cells;			// 2-dimensional array of each tile(cell) 地板
 		public 	List<List<Building>>	Buildings = new List<List<Building>>();	// array of buildings categorized by building type
 
 		void Awake () {
@@ -180,14 +180,14 @@ namespace BE {
 			bd.tilePos = posTile[iFind];
 			Move(bd.gameObject, bd.tilePos, bd.tileSize);
 
-			// if new building is outside of frustrum
-			// move camera to show building
-			Vector3 vPosCamera = TilePosToWorldPos(bd.tilePos);
+            // if new building is outside of frustrum(截头锥体)
+            // move camera to show building
+            Vector3 vPosCamera = TilePosToWorldPos(bd.tilePos);
 			GameObject.Find ("CameraRoot").transform.position = vPosCamera;
 			return true;
 		}
 
-		//check tile is vacant with given tilepos and tilesize
+		//check tile is vacant(free/blank) with given tilepos and tilesize
 		public bool IsVacant(Vector2 tilePos, Vector2 tileSize) {
 			for(int y=0 ; y < (int)tileSize.y ; ++y) {
 				for(int x=0 ; x < (int)tileSize.x ; ++x) {
@@ -257,7 +257,7 @@ namespace BE {
 
 		// create new building with type and level
 		public Building BuildingAdd(int type, int level) {
-			//Debug.Log ("BEGround::BuildingAdd");
+			Debug.Log ("BEGround::BuildingAdd");
 
 			// if previous selected building is exist, unselect that building
 			// because newly created building must be in selection state

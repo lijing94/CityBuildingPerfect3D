@@ -94,7 +94,7 @@ namespace BE {
 			// For camera fade animation, set cameras initial positions
 			goCameraRoot.transform.position = new Vector3(-5.5f,0,-5);
 			goCamera.transform.localPosition = new Vector3(0,0,-128.0f);
-			InFade = true;
+			InFade = true;   // 游戏开始时放大
 			FadeAge = 0.0f;
 		}
 
@@ -165,12 +165,12 @@ namespace BE {
 				if(FadeAge > 1.0f) { 
 					InFade = false;
 					FadeAge = 1.0f;
-					zoomCurrent = 24.0f;
+					zoomCurrent = 64.0f;   // 游戏开始时放大倍数(最终值)
 				}
 
 				goCameraRoot.transform.position = Vector3.Lerp(new Vector3(-5.5f,0,-5), Vector3.zero, FadeAge);
-				goCamera.transform.localPosition = Vector3.Lerp(new Vector3(0,0,-128.0f), new Vector3(0,0,-24.0f), FadeAge);
-			}
+				goCamera.transform.localPosition = Vector3.Lerp(new Vector3(0,0,-128.0f), new Vector3(0,0,-64.0f), FadeAge); // 游戏开始时放大倍数(中间值)
+            }
 
 			Exp.Update();
 			Gold.Update();
@@ -224,7 +224,7 @@ namespace BE {
 						if(!Dragged) {
 							Dragged = true;
 
-							// show tile grid
+							// show tile grid 显示建筑物降落网格(亮度变0.3)
 							if((buildingSelected != null) && (MouseClickedBuilding == buildingSelected)) {
 								BETween.alpha(ground.gameObject, 0.1f, 0.0f, 0.3f);
 								//Debug.Log ("ground alpha to 0.1");
@@ -282,7 +282,7 @@ namespace BE {
 
 							// hide tile grid
 							if(MouseClickedBuilding == buildingSelected) 
-								BETween.alpha(ground.gameObject, 0.1f, 0.3f, 0.0f);
+								BETween.alpha(ground.gameObject, 0.1f, 0.3f, 0f);
 
 							if(buildingSelected.Landable && buildingSelected.OnceLanded)
 								BuildingLandUnselect();
